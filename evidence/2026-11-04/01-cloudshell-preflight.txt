@@ -1,0 +1,10 @@
+~ $ python3 ~/preflight.py --live
+LIVE — read-only AWS configuration checks
+PASS    session: A non-root AWS session is available; account identifier omitted.
+PASS    rule_enabled: The deployed rule is enabled.
+PASS    saved_pattern: Saved JSON equals the expected creation-only pattern.
+PASS    expected_target: One SNS target matches the active account, region, and expected topic name.
+PASS    confirmed_email: Found 1 confirmed email subscription(s); endpoint addresses omitted.
+Delivery: NOT TESTED
+Report: /home/cloudshell-user/reports/preflight/20261104T174029.202524Z-LIVE.md
+~ $
