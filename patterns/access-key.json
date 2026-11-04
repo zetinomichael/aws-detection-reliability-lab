@@ -1,0 +1,21 @@
+{
+  "source": [
+    "aws.iam"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "iam.amazonaws.com"
+    ],
+    "eventName": [
+      "CreateAccessKey"
+    ],
+    "errorCode": [
+      {
+        "exists": false
+      }
+    ]
+  }
+}
