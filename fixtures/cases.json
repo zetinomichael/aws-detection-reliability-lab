@@ -1,0 +1,490 @@
+[
+  {
+    "id": "key-created",
+    "rule": "access-key",
+    "expected_match": true,
+    "reason": "Successful-shaped CreateAccessKey event: required service/action, no errorCode.",
+    "event": {
+      "version": "0",
+      "id": "66098831-365a-503f-91ea-fb262534ae16",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "99485a2e-867d-59d2-a06a-f9b83522cadd",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "CreateAccessKey",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "key-denied",
+    "rule": "access-key",
+    "expected_match": false,
+    "reason": "An errorCode exists; this successful-call pattern must exclude it.",
+    "event": {
+      "version": "0",
+      "id": "4ab2e9a8-17c4-5e87-997e-dfe989c385a0",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "e8fe2a18-a8e0-55d4-aff1-2e642d0dd0eb",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "CreateAccessKey",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user"
+        },
+        "responseElements": null,
+        "errorCode": "AccessDenied"
+      }
+    }
+  },
+  {
+    "id": "key-deleted",
+    "rule": "access-key",
+    "expected_match": false,
+    "reason": "Cleanup is a different action; this rule only matches creation.",
+    "event": {
+      "version": "0",
+      "id": "2449647d-01cb-5465-9a9e-a9df983678f5",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "3da6f64f-b123-578e-b427-c8e785121d70",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "DeleteAccessKey",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "key-wrong-service",
+    "rule": "access-key",
+    "expected_match": false,
+    "reason": "A similar action name from the wrong detail.eventSource must not match.",
+    "event": {
+      "version": "0",
+      "id": "e5dac14f-1f5c-5240-9c90-61d933ba1a28",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "1bc99811-9e23-5c41-a154-a67be4dc0633",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "s3.amazonaws.com",
+        "eventName": "CreateAccessKey",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {},
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "admin-exact-target",
+    "rule": "admin-policy",
+    "expected_match": true,
+    "reason": "Exact saved username, exact AWS-managed AdministratorAccess ARN, and no errorCode.",
+    "event": {
+      "version": "0",
+      "id": "1b7eda20-7929-55c2-ba48-169a11b71664",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "1e63cade-0321-5c82-b8bc-3438b39a3cbe",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "AttachUserPolicy",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user",
+          "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "admin-denied",
+    "rule": "admin-policy",
+    "expected_match": false,
+    "reason": "A denied attachment is not a successful attachment.",
+    "event": {
+      "version": "0",
+      "id": "4ef55d86-d494-54ea-a9be-8aad40aaf192",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "53ce0b08-6f29-52e2-a43d-be2ea1a8fac2",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "AttachUserPolicy",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user",
+          "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        "responseElements": null,
+        "errorCode": "AccessDenied"
+      }
+    }
+  },
+  {
+    "id": "admin-other-user",
+    "rule": "admin-policy",
+    "expected_match": false,
+    "reason": "The historical saved rule only watches security-lab-test-user.",
+    "event": {
+      "version": "0",
+      "id": "5b82cda8-0576-5420-aa18-789487d01c23",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "36b6f7e6-f59a-5c82-9fac-2ae5c7d94daf",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "AttachUserPolicy",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "another-test-user",
+          "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "admin-lookalike-policy",
+    "rule": "admin-policy",
+    "expected_match": false,
+    "reason": "A customer-managed policy with the same name has a different ARN.",
+    "event": {
+      "version": "0",
+      "id": "747d8241-13d2-570c-b006-832acc34fa83",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "231f84cb-9006-5b1a-804b-4823e3d19f44",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "AttachUserPolicy",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "userName": "security-lab-test-user",
+          "policyArn": "arn:aws:iam::000000000000:policy/AdministratorAccess"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "admin-role-attachment",
+    "rule": "admin-policy",
+    "expected_match": false,
+    "reason": "Role attachments are outside this saved rule; document the scope gap.",
+    "event": {
+      "version": "0",
+      "id": "4ae5c3b6-64b8-522e-b3c1-0b6a25aa23ab",
+      "account": "000000000000",
+      "source": "aws.iam",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "db48fabd-700d-5f53-a433-eff36991a8fd",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "iam.amazonaws.com",
+        "eventName": "AttachRolePolicy",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "roleName": "demo-role",
+          "policyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "validation-off",
+    "rule": "trail-change",
+    "expected_match": true,
+    "reason": "The rule matches UpdateTrail, including validation being disabled.",
+    "event": {
+      "version": "0",
+      "id": "bbcb29b6-9ff8-572c-9a21-112b027ae12d",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "d0333903-a52d-5e81-ac33-0e2009d39ba5",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "UpdateTrail",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail",
+          "enableLogFileValidation": false
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "validation-restored",
+    "rule": "trail-change",
+    "expected_match": true,
+    "reason": "A restoring UpdateTrail also matches. Matching is not a maliciousness judgment.",
+    "event": {
+      "version": "0",
+      "id": "63db1886-976f-57a4-917a-170518d595f6",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "7b83e849-0963-58dd-b0f6-034afc4d24d0",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "UpdateTrail",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail",
+          "enableLogFileValidation": true
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "trail-stop-request",
+    "rule": "trail-change",
+    "expected_match": true,
+    "reason": "StopLogging is included in the pattern; this synthetic fixture is not a live test.",
+    "event": {
+      "version": "0",
+      "id": "b6f79d5d-311f-5cc5-81a5-e55d3afdf8c7",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "da9396f9-b63e-5d8d-acc5-b442bfd037a6",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "StopLogging",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "trail-delete-request",
+    "rule": "trail-change",
+    "expected_match": true,
+    "reason": "DeleteTrail is included in the pattern; no real trail is deleted.",
+    "event": {
+      "version": "0",
+      "id": "b13644bc-5c79-5816-9a16-cead016efa83",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "17af6219-7303-58d8-8477-bbd0da9e77e1",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "DeleteTrail",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "trail-selectors-change",
+    "rule": "trail-change",
+    "expected_match": true,
+    "reason": "PutEventSelectors is included in the pattern; fixture coverage does not prove live coverage.",
+    "event": {
+      "version": "0",
+      "id": "c37eb25f-6a72-5029-93f7-451fbd59c518",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "99554b88-99e8-59c7-82d6-8f5b6ad59310",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "PutEventSelectors",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "trailName": "demo-trail"
+        },
+        "responseElements": null
+      }
+    }
+  },
+  {
+    "id": "trail-change-denied",
+    "rule": "trail-change",
+    "expected_match": false,
+    "reason": "A denied change is excluded by the successful-call filter.",
+    "event": {
+      "version": "0",
+      "id": "52c12a29-8094-5acc-a34d-ba88083799f7",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "3844a054-5a7b-5381-a4ff-2165afc85464",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "UpdateTrail",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail"
+        },
+        "responseElements": null,
+        "errorCode": "AccessDenied"
+      }
+    }
+  },
+  {
+    "id": "trail-read-status",
+    "rule": "trail-change",
+    "expected_match": false,
+    "reason": "Read-only GetTrailStatus is outside this rule.",
+    "event": {
+      "version": "0",
+      "id": "62f76eb1-e62a-5ac1-b910-bf8e9c958333",
+      "account": "000000000000",
+      "source": "aws.cloudtrail",
+      "time": "2026-10-24T16:00:00Z",
+      "region": "us-east-1",
+      "resources": [],
+      "detail-type": "AWS API Call via CloudTrail",
+      "detail": {
+        "eventID": "867826ba-1baa-5d71-9850-50e2c9b2f537",
+        "eventTime": "2026-10-24T16:00:00Z",
+        "eventSource": "cloudtrail.amazonaws.com",
+        "eventName": "GetTrailStatus",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "arn": "arn:aws:sts::000000000000:assumed-role/LabOperator/synthetic-session"
+        },
+        "requestParameters": {
+          "name": "demo-trail"
+        },
+        "responseElements": null
+      }
+    }
+  }
+]
