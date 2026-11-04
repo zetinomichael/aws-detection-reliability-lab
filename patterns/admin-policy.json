@@ -1,0 +1,29 @@
+{
+  "source": [
+    "aws.iam"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "iam.amazonaws.com"
+    ],
+    "eventName": [
+      "AttachUserPolicy"
+    ],
+    "requestParameters": {
+      "userName": [
+        "security-lab-test-user"
+      ],
+      "policyArn": [
+        "arn:aws:iam::aws:policy/AdministratorAccess"
+      ]
+    },
+    "errorCode": [
+      {
+        "exists": false
+      }
+    ]
+  }
+}
